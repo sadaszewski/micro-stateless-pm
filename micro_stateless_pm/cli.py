@@ -11,7 +11,7 @@ import os
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "site", nargs="?", help="site used in the password generation (required)"
+        "site", nargs="?", help="site used in the password generation (required)", default=''
     )
     parser.add_argument(
         "login", nargs="?", help="login used in the password generation. Default to ''."
