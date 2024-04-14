@@ -37,7 +37,7 @@ def main():
         print(password)
         return
     pyperclip.copy(password)
-    print('Password copied to clipboard. One you are done, press ENTER to clear the clipboard')
+    print('Password copied to clipboard. Once you are done, press ENTER to clear the clipboard')
     input()
     pyperclip.copy('')
 
