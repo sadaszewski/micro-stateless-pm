@@ -12,5 +12,6 @@ setup(
     long_description='Micro stateless password manager is a minimal CLI based on lesspass for easier audit',
     scripts=[],
     install_requires=[
+        'aioconsole'
     ]
 )

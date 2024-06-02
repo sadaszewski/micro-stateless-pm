@@ -9,6 +9,14 @@ from .profile import *
 from .password import *
 import tkinter.simpledialog
 import getpass
+import asyncio
+import aioconsole as aioc
+import os
+
+
+async def wait_keypress_with_timeout(timeout=5):    
+    t = asyncio.create_task(aioc.ainput())
+    await asyncio.wait([ t ], timeout=timeout)
 
 
 def main():
@@ -36,9 +44,12 @@ def main():
     except:
         print(password)
         return
-    pyperclip.copy(password)
-    print('Password copied to clipboard. Once you are done, press ENTER to clear the clipboard')
+    pyperclip.copy(password[:len(password)//2])
+    print('Half of the password copied to the clipboard. Press ENTER to get the second part copied to the clipboard')
     input()
+    pyperclip.copy(password[len(password)//2:])
+    print('Second half of the password copied to the clipboard. Press ENTER to clear the clipboard. Auto-clear in 10 seconds...')
+    asyncio.run(wait_keypress_with_timeout(10))
     pyperclip.copy('')
 
 
