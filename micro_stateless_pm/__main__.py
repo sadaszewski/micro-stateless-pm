@@ -44,6 +44,9 @@ def main():
         root.destroy()
     except:
         master_password = getpass.getpass('Master Password: ')
+    if master_password is None:
+        print('Master password not provided. Aborting...')
+        return
     password_profile = create_profile(args)
     password = generate_password(password_profile, master_password)
     try:
