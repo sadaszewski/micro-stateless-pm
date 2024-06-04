@@ -20,7 +20,8 @@
 
 import hashlib
 
-from lesspass import exceptions
+class ExcludeAllCharsAvailable(Exception):
+    pass
 
 CHARACTER_SUBSETS = {
     "lowercase": "abcdefghijklmnopqrstuvwxyz",
@@ -45,7 +46,7 @@ def _calc_entropy(password_profile, master_password):
 def _remove_excluded_chars(string, exclude):
     new_string = "".join(c for c in string if c not in exclude)
     if len(new_string) == 0:
-        raise exceptions.ExcludeAllCharsAvailable
+        raise ExcludeAllCharsAvailable
     return new_string
 
 

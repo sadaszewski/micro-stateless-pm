@@ -19,6 +19,13 @@ async def wait_keypress_with_timeout(timeout=5):
     await asyncio.wait([ t ], timeout=timeout)
 
 
+def clear_screen():
+    if os.name == 'nt':
+        os.system('cls')
+    else:
+        os.system('clear')
+
+
 def main():
     args = parse_args()
     root = None
@@ -42,7 +49,14 @@ def main():
     try:
         import pyperclip
     except:
-        print(password)
+        print('Press ENTER to obtain the second half. First half of the password:')
+        print(password[:len(password)//2])
+        input()
+        clear_screen()
+        print('Press ENTER to clear the screen. Auto-clear in 10 seconds. Second half:')
+        print(password[len(password)//2:])
+        asyncio.run(wait_keypress_with_timeout(10))
+        clear_screen()
         return
     pyperclip.copy(password[:len(password)//2])
     print('Half of the password copied to the clipboard. Press ENTER to get the second part copied to the clipboard')
