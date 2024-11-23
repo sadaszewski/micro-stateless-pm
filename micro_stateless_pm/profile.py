@@ -15,6 +15,9 @@ def create_profile(args):
         "site": args.site,
         "login": args.login or "",
         "exclude": args.exclude or "",
+        "use_random_salt": False if args.no_random_salt else True,
+        "use_scrypt": False if args.use_pbkdf2 else True,
+        "regenerate_random_salt": True if args.regenerate_random_salt else False,
     }
     if args.l or args.u or args.d or args.s:
         profile["lowercase"] = args.l

@@ -90,5 +90,10 @@ def parse_args():
         help="remove symbols from password",
         action="store_true",
     )
+
+    parser.add_argument('--no-random-salt', action='store_true', help='Disable random salt')
+    parser.add_argument('--regenerate-random-salt', action='store_true', help='Regenerate random salt')
+    parser.add_argument('--use-pbkdf2', action='store_true', help='Use PBKDF2 instead of scrypt')
+
     parsed_args = parser.parse_args()
     return parsed_args

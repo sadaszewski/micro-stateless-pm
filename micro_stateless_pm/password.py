@@ -19,6 +19,8 @@
 
 
 import hashlib
+from pathlib import Path
+import os
 
 class ExcludeAllCharsAvailable(Exception):
     pass
@@ -37,9 +39,28 @@ def _calc_entropy(password_profile, master_password):
         + password_profile["login"]
         + hex(password_profile["counter"])[2:]
     )
-    hex_entropy = hashlib.pbkdf2_hmac(
-        "sha256", master_password.encode("utf-8"), salt.encode("utf-8"), 100000, 32
-    ).hex()
+    salt = salt.encode('utf-8')
+    if password_profile['use_random_salt']:
+        print('Using random salt')
+        random_salt_path = Path.home() / '.micro_stateless_pm' / 'random_salt.bin'
+        if random_salt_path.exists() and not password_profile['regenerate_random_salt']:
+            random_salt = random_salt_path.read_bytes()
+        else:
+            random_salt = os.urandom(32)
+            random_salt_path.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
+            random_salt_path.touch(mode=0o600, exist_ok=True)
+            random_salt_path.write_bytes(random_salt)
+            print(f'New random salt has been generated and saved to the following file: {str(random_salt_path)}')
+        salt += random_salt
+    if password_profile['use_scrypt']:
+        print('Using scrypt')
+        hex_entropy = hashlib.scrypt(master_password.encode('utf-8'),
+            salt=salt, n=16384, r=8, p=1).hex()
+    else:
+        print('Using PBKDF2')
+        hex_entropy = hashlib.pbkdf2_hmac(
+            "sha256", master_password.encode("utf-8"), salt, 100000, 32
+        ).hex()
     return int(hex_entropy, 16)
 
 
