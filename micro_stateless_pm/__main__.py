@@ -7,7 +7,6 @@
 from .cli import *
 from .profile import *
 from .password import *
-import tkinter.simpledialog
 import getpass
 import asyncio
 import aioconsole as aioc
@@ -39,6 +38,7 @@ def main():
         except:
             pass
     try:
+        import tkinter.simpledialog
         root.tk.eval(f'tk::PlaceWindow {root._w} center')
         master_password = tkinter.simpledialog.askstring("Password", "Enter password:", show='*', parent=root)
         root.destroy()
@@ -50,7 +50,7 @@ def main():
     password_profile = create_profile(args)
     password = generate_password(password_profile, master_password)
     try:
-        import pyperclip
+        import pyclip
     except:
         print('Press ENTER to obtain the second half. First half of the password:')
         print(password[:len(password)//2])
@@ -61,13 +61,13 @@ def main():
         asyncio.run(wait_keypress_with_timeout(10))
         clear_screen()
         return
-    pyperclip.copy(password[:len(password)//2])
+    pyclip.copy(password[:len(password)//2])
     print('Half of the password copied to the clipboard. Press ENTER to get the second part copied to the clipboard')
     input()
-    pyperclip.copy(password[len(password)//2:])
+    pyclip.copy(password[len(password)//2:])
     print('Second half of the password copied to the clipboard. Press ENTER to clear the clipboard. Auto-clear in 10 seconds...')
     asyncio.run(wait_keypress_with_timeout(10))
-    pyperclip.copy('')
+    pyclip.copy('')
 
 
 
